@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+    <!-- Not needed -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root">
+    <!-- NAVIGATION -->
+    <nav class="flex justify-start items-center bg-red-950 px-8 py-3 h-20">
+      <ul class="flex">
+        <li class="mr-6">
+        <a aria-current="page" class="text-white font-bold hover:underline underline" href="/">Posts</a>
+      </li>
+        <li class="mr-6">
+          <a class="text-white font-bold hover:underline" href="/search">Search</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- SEARCH -->
+  <section class="py-3 container mx-auto px-4 flex flex-col space-y-4 text-left">
+    <div class="w-1/3">
+      <div class="mt-2">
+        <form>
+          <label for="search" class="block mb-2 text-sm font-medium">Search:</label>
+          <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="search" id="search" placeholder="Search..." value="john">
+        </form>
+      </div>
+    </div>
+    <section class="space-y-4">
+      <ul>
+        <li>
+          <div class="p-4 border border-stone-700 rounded my-3 flex justify-between gap-5 items-start">
+            <div class="flex-none">
+              <div class="flex-row">
+                <div>
+                  <strong>John Doe the First o...</strong>
+                </div>
+                <div>
+                  <em>10. 2. 2024 - 21:17:41</em>
+                </div>
+              </div>
+            </div>
+            <div class="flex-1">
+              <p class="text-ellipsis overflow-hidden">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis condimentum augue id magna semper rutrum. Pellentesque arcu. Etiam dictum tincidunt diam. In rutrum. Morbi scelerisque luctus velit. Null...</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </section>
+  </div>
+</body>
+</html>
