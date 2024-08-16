@@ -2663,7 +2663,7 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-react-dom@^19.0.0-rc-49496d49-20240814:
+react-dom@^19.0.0-rc.0:
   version "19.0.0-rc-fb9a90fa48-20240614"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.0.0-rc-fb9a90fa48-20240614.tgz#8dce9ed0650096d65437e4bce790628e483831a2"
   integrity sha512-PoEsPe32F7KPLYOBvZfjylEI1B67N44PwY3lyvpmBkhlluLnLz0jH8q2Wg9YidAi6z0k3iUnNRm5x10wurzt9Q==
@@ -2695,10 +2695,10 @@ react-router@6.26.0:
   dependencies:
     "@remix-run/router" "1.19.0"
 
-react@^19.0.0-rc-49496d49-20240814:
-  version "19.0.0-rc-fb9a90fa48-20240614"
-  resolved "https://registry.yarnpkg.com/react/-/react-19.0.0-rc-fb9a90fa48-20240614.tgz#90eb43a0b005e8cc3cbf0d801c14816d01df1b08"
-  integrity sha512-nvE3Gy+IOIfH/DXhkyxFVQSrITarFcQz4+shzC/McxQXEUSonpw2oDy/Wi9hdDtV3hlP12VYuDL95iiBREedNQ==
+react@^19.0.0-rc.0:
+  version "19.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-19.0.0-rc.0.tgz#9f1e9965c30948b472adcf5ba5184413375e4a40"
+  integrity sha512-8nrDCl5uE54FHeKqKrEO0TS+10bT4cxutJGb2okiJc0FHMQ6I3FeItaqly/1nbijlhSO3HmAVyPIexIQQWYAtQ==
 
 read-cache@^1.0.0:
   version "1.0.0"
