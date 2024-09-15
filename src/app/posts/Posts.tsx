@@ -1,5 +1,20 @@
 import { useState } from 'react';
 
+const data = [
+  {
+    id: 1,
+    name: 'John Doe',
+    publishedAt: '2024-01-01',
+    text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos.',
+  },
+  {
+    id: 2,
+    name: 'John Doe',
+    publishedAt: '2024-01-02',
+    text: 'Foo.',
+  },
+];
+
 export const Posts = () => {
   const [name, setName] = useState('');
   const [text, setText] = useState('');
@@ -60,27 +75,25 @@ export const Posts = () => {
         </form>
         <section className="space-y-4">
           <ul>
-            <li>
-              <div className="p-4 border border-stone-700 rounded my-3 flex justify-between gap-5 items-start">
-                <div className="flex-none">
-                  <div className="flex-row">
-                    <div>
-                      <strong>John Doe the First o...</strong>
-                    </div>
-                    <div>
-                      <em>10. 2. 2024 - 21:17:41</em>
+            {data.map(({ id, name: author, publishedAt, text: content }) => (
+              <li key={id}>
+                <div className="p-4 border border-stone-700 rounded my-3 flex justify-between gap-5 items-start">
+                  <div className="flex-none">
+                    <div className="flex-row">
+                      <div>
+                        <strong>{author}</strong>
+                      </div>
+                      <div>
+                        <em>{publishedAt}</em>
+                      </div>
                     </div>
                   </div>
+                  <div className="flex-1">
+                    <p className="text-ellipsis overflow-hidden">{content}</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="text-ellipsis overflow-hidden">
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis condimentum augue id magna semper
-                    rutrum. Pellentesque arcu. Etiam dictum tincidunt diam. In rutrum. Morbi scelerisque luctus velit.
-                    Null...
-                  </p>
-                </div>
-              </div>
-            </li>
+              </li>
+            ))}
           </ul>
         </section>
       </section>
