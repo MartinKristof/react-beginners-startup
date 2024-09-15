@@ -1,25 +1,36 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 const data = [
   {
     id: 1,
     name: 'John Doe the First of His Name and the Last of His Kind',
-    publishedAt: '2024-01-01',
+    publishedAt: new Date(),
     text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos.',
   },
   {
     id: 2,
     name: 'John Doe',
-    publishedAt: '2024-01-02',
+    publishedAt: new Date(),
     text: 'Foo.',
   },
 ];
 
 const truncate = (text: string, length = 20) => (text.length > length ? `${text.substring(0, length)}...` : text);
 
+const formatDate = (date: Date) => `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
+
 export const Posts = () => {
   const [name, setName] = useState('');
   const [text, setText] = useState('');
+  const [posts, setPosts] = useState(data);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setPosts(currentPosts => [{ id: posts.length + 1, name, text, publishedAt: new Date() }, ...currentPosts]);
+
+    setName('');
+    setText('');
+  };
 
   return (
     <>
@@ -38,7 +49,7 @@ export const Posts = () => {
         </ul>
       </nav>
       <section className="py-3 container mx-auto px-4 flex flex-col space-y-4 text-left">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div>
             <div className="mt-2">
               <label htmlFor="name" className="block mb-2 text-sm font-medium">
@@ -77,7 +88,7 @@ export const Posts = () => {
         </form>
         <section className="space-y-4">
           <ul>
-            {data.map(({ id, name: author, publishedAt, text: content }) => (
+            {posts.map(({ id, name: author, publishedAt, text: content }) => (
               <li key={id}>
                 <div className="p-4 border border-stone-700 rounded my-3 flex justify-between gap-5 items-start">
                   <div className="flex-none w-32">
@@ -86,7 +97,7 @@ export const Posts = () => {
                         <strong>{truncate(author)}</strong>
                       </div>
                       <div>
-                        <em>{publishedAt}</em>
+                        <em>{formatDate(publishedAt)}</em>
                       </div>
                     </div>
                   </div>
