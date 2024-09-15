@@ -19,22 +19,48 @@ const truncate = (text: string, length = 20) => (text.length > length ? `${text.
 
 const formatDate = (date: Date) => `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
 
+const DEFAULT_ERRORS = { name: '', text: '' };
+
+const validateForm = (name: string, text: string) => {
+  const errors = { ...DEFAULT_ERRORS };
+
+  if (!name.trim().length) {
+    errors.name = 'Name is required';
+  } else if (name.trim().length < 3) {
+    errors.name = 'Name must be at least 3 characters long';
+  }
+
+  if (!text.trim().length) {
+    errors.text = 'Text is required';
+  } else if (text.trim().length < 3) {
+    errors.text = 'Text must be at least 3 characters long';
+  }
+
+  return errors;
+};
+
 export const Posts = () => {
   const [posts, setPosts] = useState(data);
+  const [errors, setErrors] = useState({ ...DEFAULT_ERRORS });
 
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const name = inputRef.current?.value;
-    const text = textareaRef.current?.value;
+    const name = inputRef.current?.value || '';
+    const text = textareaRef.current?.value || '';
 
-    if (!name || !text) {
+    const validatedErrors = validateForm(name, text);
+
+    if (validatedErrors.name || validatedErrors.text) {
+      setErrors(validatedErrors);
+
       return;
     }
 
     setPosts(currentPosts => [{ id: posts.length + 1, name, text, publishedAt: new Date() }, ...currentPosts]);
+    setErrors({ ...DEFAULT_ERRORS });
 
     inputRef.current!.value = '';
     textareaRef.current!.value = '';
@@ -69,9 +95,9 @@ export const Posts = () => {
                   name="name"
                   id="name"
                   placeholder="Your name"
-                  required
                 />
               </label>
+              <div className="text-red-500">{errors.name}</div>
             </div>
             <div className="mt-2">
               <label htmlFor="text" className="block mb-2 text-sm font-medium">
@@ -83,9 +109,9 @@ export const Posts = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Some post"
                   rows={4}
-                  required
                 />
               </label>
+              <div className="text-red-500">{errors.text}</div>
             </div>
           </div>
           <div className="mt-2">
