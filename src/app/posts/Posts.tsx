@@ -3,7 +3,7 @@ import { useState } from 'react';
 const data = [
   {
     id: 1,
-    name: 'John Doe',
+    name: 'John Doe the First of His Name and the Last of His Kind',
     publishedAt: '2024-01-01',
     text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos.',
   },
@@ -14,6 +14,8 @@ const data = [
     text: 'Foo.',
   },
 ];
+
+const truncate = (text: string, length = 20) => (text.length > length ? `${text.substring(0, length)}...` : text);
 
 export const Posts = () => {
   const [name, setName] = useState('');
@@ -78,10 +80,10 @@ export const Posts = () => {
             {data.map(({ id, name: author, publishedAt, text: content }) => (
               <li key={id}>
                 <div className="p-4 border border-stone-700 rounded my-3 flex justify-between gap-5 items-start">
-                  <div className="flex-none">
+                  <div className="flex-none w-32">
                     <div className="flex-row">
                       <div>
-                        <strong>{author}</strong>
+                        <strong>{truncate(author)}</strong>
                       </div>
                       <div>
                         <em>{publishedAt}</em>
@@ -89,7 +91,7 @@ export const Posts = () => {
                     </div>
                   </div>
                   <div className="flex-1">
-                    <p className="text-ellipsis overflow-hidden">{content}</p>
+                    <p className="text-ellipsis overflow-hidden">{truncate(content, 200)}</p>
                   </div>
                 </div>
               </li>
