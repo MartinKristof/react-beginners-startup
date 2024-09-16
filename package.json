@@ -17,7 +17,7 @@
   "dependencies": {
     "react": "^19.0.0-rc-49496d49-20240814",
     "react-dom": "^19.0.0-rc-49496d49-20240814",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
     "@types/react": "npm:types-react@rc",
