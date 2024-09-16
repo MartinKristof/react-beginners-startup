@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react';
+import { useActionState, useState } from 'react';
 
 const data = [
   {
@@ -19,10 +19,10 @@ const truncate = (text: string, length = 20) => (text.length > length ? `${text.
 
 const formatDate = (date: Date) => `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
 
-const DEFAULT_ERRORS = { name: '', text: '' };
+const DEFAULT_FORM_STATE = { name: '', text: '', errors: { name: '', text: '' } };
 
 const validateForm = (name: string, text: string) => {
-  const errors = { ...DEFAULT_ERRORS };
+  const errors = { ...DEFAULT_FORM_STATE.errors };
 
   if (!name.trim().length) {
     errors.name = 'Name is required';
@@ -41,30 +41,32 @@ const validateForm = (name: string, text: string) => {
 
 export const Posts = () => {
   const [posts, setPosts] = useState(data);
-  const [errors, setErrors] = useState({ ...DEFAULT_ERRORS });
+  const [state, submitAction] = useActionState<
+    { name: string; text: string; errors: { name: string; text: string } },
+    FormData
+  >(
+    (_, payload) => {
+      const text = payload.get('text') as string;
+      const name = payload.get('name') as string;
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+      const errors = validateForm(name, text);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const name = inputRef.current?.value || '';
-    const text = textareaRef.current?.value || '';
+      if (errors.name || errors.text) {
+        return { text, name, errors };
+      }
 
-    const validatedErrors = validateForm(name, text);
+      setPosts(currentPosts => [{ id: currentPosts.length + 1, name, text, publishedAt: new Date() }, ...currentPosts]);
 
-    if (validatedErrors.name || validatedErrors.text) {
-      setErrors(validatedErrors);
+      return { ...DEFAULT_FORM_STATE };
+    },
+    { ...DEFAULT_FORM_STATE },
+  );
 
-      return;
-    }
-
-    setPosts(currentPosts => [{ id: posts.length + 1, name, text, publishedAt: new Date() }, ...currentPosts]);
-    setErrors({ ...DEFAULT_ERRORS });
-
-    inputRef.current!.value = '';
-    textareaRef.current!.value = '';
-  };
+  const {
+    errors: { name: nameError, text: textError },
+    name: nameValue,
+    text: textValue,
+  } = state;
 
   return (
     <>
@@ -83,35 +85,35 @@ export const Posts = () => {
         </ul>
       </nav>
       <section className="py-3 container mx-auto px-4 flex flex-col space-y-4 text-left">
-        <form onSubmit={handleSubmit}>
+        <form action={submitAction}>
           <div>
             <div className="mt-2">
               <label htmlFor="name" className="block mb-2 text-sm font-medium">
                 Your name:
                 <input
                   type="text"
-                  ref={inputRef}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   name="name"
                   id="name"
                   placeholder="Your name"
+                  defaultValue={nameValue}
                 />
               </label>
-              <div className="text-red-500">{errors.name}</div>
+              <div className="text-red-500">{nameError}</div>
             </div>
             <div className="mt-2">
               <label htmlFor="text" className="block mb-2 text-sm font-medium">
                 Your post:
                 <textarea
                   id="text"
-                  ref={textareaRef}
                   name="text"
                   className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Some post"
                   rows={4}
+                  defaultValue={textValue}
                 />
               </label>
-              <div className="text-red-500">{errors.text}</div>
+              <div className="text-red-500">{textError}</div>
             </div>
           </div>
           <div className="mt-2">
