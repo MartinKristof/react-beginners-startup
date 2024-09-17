@@ -1,5 +1,7 @@
 import { FC, useActionState, useState } from 'react';
 import { FormGroup } from './components/FormGroup';
+import { PostList } from './components/PostList';
+import { TPost } from './types';
 
 const data = [
   {
@@ -15,10 +17,6 @@ const data = [
     text: 'Foo.',
   },
 ];
-
-const truncate = (text: string, length = 20) => (text.length > length ? `${text.substring(0, length)}...` : text);
-
-const formatDate = (date: Date) => `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
 
 const DEFAULT_FORM_STATE = { name: '', text: '', errors: { name: '', text: '' } };
 
@@ -41,7 +39,7 @@ const validateForm = (name: string, text: string) => {
 };
 
 export const Posts: FC = () => {
-  const [posts, setPosts] = useState(data);
+  const [posts, setPosts] = useState<TPost[]>(data);
   const [state, submitAction] = useActionState<
     { name: string; text: string; errors: { name: string; text: string } },
     FormData
@@ -118,27 +116,7 @@ indigo-500 focus:border-indigo-500"
           </div>
         </form>
         <section className="space-y-4">
-          <ul>
-            {posts.map(({ id, name: author, publishedAt, text: content }) => (
-              <li key={id}>
-                <div className="p-4 border border-stone-700 rounded my-3 flex justify-between gap-5 items-start">
-                  <div className="flex-none w-32">
-                    <div className="flex-row">
-                      <div>
-                        <strong>{truncate(author)}</strong>
-                      </div>
-                      <div>
-                        <em>{formatDate(publishedAt)}</em>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-ellipsis overflow-hidden">{truncate(content, 200)}</p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <PostList posts={posts} />
         </section>
       </section>
     </>
