@@ -9,7 +9,7 @@ interface IPostListProps {
 export const PostList: FC<IPostListProps> = ({ posts }) => (
   <ul>
     {posts.map(({ id, name, publishedAt, text }) => (
-      <PostItem key={id} name={name} publishedAt={publishedAt} text={text} />
+      <PostItem key={id} name={name} publishedAt={publishedAt} text={text} hasExactDate />
     ))}
   </ul>
 );
