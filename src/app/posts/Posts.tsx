@@ -1,4 +1,5 @@
-import { useActionState, useState } from 'react';
+import { FC, useActionState, useState } from 'react';
+import { FormGroup } from './components/FormGroup';
 
 const data = [
   {
@@ -39,7 +40,7 @@ const validateForm = (name: string, text: string) => {
   return errors;
 };
 
-export const Posts = () => {
+export const Posts: FC = () => {
   const [posts, setPosts] = useState(data);
   const [state, submitAction] = useActionState<
     { name: string; text: string; errors: { name: string; text: string } },
@@ -87,34 +88,28 @@ export const Posts = () => {
       <section className="py-3 container mx-auto px-4 flex flex-col space-y-4 text-left">
         <form action={submitAction}>
           <div>
-            <div className="mt-2">
-              <label htmlFor="name" className="block mb-2 text-sm font-medium">
-                Your name:
-                <input
-                  type="text"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  name="name"
-                  id="name"
-                  placeholder="Your name"
-                  defaultValue={nameValue}
-                />
-              </label>
-              <div className="text-red-500">{nameError}</div>
-            </div>
-            <div className="mt-2">
-              <label htmlFor="text" className="block mb-2 text-sm font-medium">
-                Your post:
-                <textarea
-                  id="text"
-                  name="text"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Some post"
-                  rows={4}
-                  defaultValue={textValue}
-                />
-              </label>
-              <div className="text-red-500">{textError}</div>
-            </div>
+            <FormGroup label="Your name" id="name" error={nameError}>
+              <input
+                type="text"
+                className="w-full px-4 py-2 border border-
+gray-300 rounded-md shadow-sm focus:outline-none focus:ring-
+indigo-500 focus:border-indigo-500"
+                name="name"
+                id="name"
+                placeholder="Your name"
+                defaultValue={nameValue}
+              />
+            </FormGroup>
+            <FormGroup label="Your post" id="text" error={textError}>
+              <textarea
+                id="text"
+                name="text"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Some post"
+                rows={4}
+                defaultValue={textValue}
+              />
+            </FormGroup>
           </div>
           <div className="mt-2">
             <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
