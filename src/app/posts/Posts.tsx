@@ -3,20 +3,20 @@ import { FormGroup } from './components/FormGroup';
 import { PostList } from './components/PostList';
 import { TPost } from './types';
 
-const data = [
-  {
-    id: 1,
-    name: 'John Doe the First of His Name and the Last of His Kind',
-    publishedAt: new Date(),
-    text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos.',
-  },
-  {
-    id: 2,
-    name: 'John Doe',
-    publishedAt: new Date(),
-    text: 'Foo.',
-  },
-];
+// const data = [
+//   {
+//     id: 1,
+//     name: 'John Doe the First of His Name and the Last of His Kind',
+//     publishedAt: new Date(),
+//     text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos.',
+//   },
+//   {
+//     id: 2,
+//     name: 'John Doe',
+//     publishedAt: new Date(),
+//     text: 'Foo.',
+//   },
+// ];
 
 const DEFAULT_FORM_STATE = { name: '', text: '', errors: { name: '', text: '' } };
 
@@ -39,7 +39,7 @@ const validateForm = (name: string, text: string) => {
 };
 
 export const Posts: FC = () => {
-  const [posts, setPosts] = useState<TPost[]>(data);
+  const [posts, setPosts] = useState<TPost[]>([]);
   const [state, submitAction] = useActionState<
     { name: string; text: string; errors: { name: string; text: string } },
     FormData
@@ -115,9 +115,7 @@ indigo-500 focus:border-indigo-500"
             </button>
           </div>
         </form>
-        <section className="space-y-4">
-          <PostList posts={posts} />
-        </section>
+        <section className="space-y-4">{posts.length > 0 && <PostList posts={posts} />}</section>
       </section>
     </>
   );
