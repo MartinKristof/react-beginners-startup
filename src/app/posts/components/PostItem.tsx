@@ -3,8 +3,11 @@ import { TPost } from '../types';
 
 const truncate = (text: string, length = 20) => (text.length > length ? `${text.substring(0, length)}...` : text);
 
-const formatDate = (date: Date, hasExactDate: boolean) =>
-  hasExactDate ? `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}` : date.toLocaleDateString();
+const formatDate = (time: number, hasExactDate: boolean) => {
+  const date = new Date(time);
+
+  return hasExactDate ? `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}` : date.toLocaleDateString();
+};
 
 interface IPostItemProps {
   name: TPost['name'];

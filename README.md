@@ -23,3 +23,9 @@ React 19 RC project in TS based on Vite. Powered by TailwindCSS.
 - lint
 - lint:fix
 - qa
+
+## Development
+
+1. Set `VITE_API_URL` in .env.local (to http://localhost:3030/posts)
+1. Install deps with `yarn` command
+1. Run backend with `yarn backend`
