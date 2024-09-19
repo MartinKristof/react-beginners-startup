@@ -29,12 +29,17 @@ export const Posts: FC = () => {
     setPosts(data);
   };
 
-  const handleSubmit = async (name: string, text: string) => {
+  const addPost = async (name: string, text: string) => {
     await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, text, publishedAt: new Date().getTime() }),
     });
+  };
+
+  const handleSubmit = async (name: string, text: string) => {
+    await addPost(name, text);
+    fetchPosts();
   };
 
   useEffect(() => {
