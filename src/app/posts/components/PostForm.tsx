@@ -4,12 +4,13 @@ import { DEFAULT_FORM_STATE, submitForm } from '../actions/submitForm';
 
 interface IPostFormProps {
   onSubmit: (name: string, text: string) => Promise<void>;
+  apiError?: string;
 }
 
 const FIELD_CLASS_NAME =
   'w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500';
 
-export const PostForm: FC<IPostFormProps> = ({ onSubmit }) => {
+export const PostForm: FC<IPostFormProps> = ({ onSubmit, apiError }) => {
   const [state, submitAction] = useActionState<
     { name: string; text: string; errors: { name: string; text: string } },
     FormData
@@ -23,6 +24,7 @@ export const PostForm: FC<IPostFormProps> = ({ onSubmit }) => {
 
   return (
     <form action={submitAction}>
+      {apiError && <div className="text-red-500">{apiError}</div>}
       <div>
         <FormGroup label="Your name" id="name" error={nameError}>
           <input
