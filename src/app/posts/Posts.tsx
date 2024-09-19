@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { PostList } from './components/PostList';
 import { TPost } from './types';
 import { PostForm } from './components/PostForm';
@@ -23,8 +23,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 export const Posts: FC = () => {
   const [posts, setPosts] = useState<TPost[]>([]);
 
-  const fetchPosts = async () => {
-    const response = await fetch(API_URL);
+  const fetchPosts = async (signal?: AbortSignal) => {
+    const response = await fetch(API_URL, { signal });
     const data = (await response.json()) as TPost[];
     setPosts(data);
   };
@@ -35,8 +35,17 @@ export const Posts: FC = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, text, publishedAt: new Date().getTime() }),
     });
-    fetchPosts();
   };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+    fetchPosts(signal);
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   return (
     <>
