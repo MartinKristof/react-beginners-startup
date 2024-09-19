@@ -3,7 +3,7 @@ import { FormGroup } from './FormGroup';
 import { DEFAULT_FORM_STATE, submitForm } from '../actions/submitForm';
 
 interface IPostFormProps {
-  onSubmit: (name: string, text: string) => void;
+  onSubmit: (name: string, text: string) => Promise<void>;
 }
 
 const FIELD_CLASS_NAME =
