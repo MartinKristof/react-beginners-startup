@@ -20,17 +20,26 @@ import { PostForm } from './components/PostForm';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+const getUrl = () => {
+  const url = new URL(API_URL);
+
+  url.searchParams.append('_sort', 'id');
+  url.searchParams.append('_order', 'desc');
+
+  return url;
+};
+
 export const Posts: FC = () => {
   const [posts, setPosts] = useState<TPost[]>([]);
 
   const fetchPosts = async (signal?: AbortSignal) => {
-    const response = await fetch(API_URL, { signal });
+    const response = await fetch(getUrl(), { signal });
     const data = (await response.json()) as TPost[];
     setPosts(data);
   };
 
   const addPost = async (name: string, text: string) => {
-    await fetch(API_URL, {
+    await fetch(getUrl(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, text, publishedAt: new Date().getTime() }),
