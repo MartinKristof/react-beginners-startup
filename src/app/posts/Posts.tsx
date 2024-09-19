@@ -47,16 +47,24 @@ export const Posts: FC = () => {
     }
   };
 
-  const addPost = async (name: string, text: string) => {
-    await fetch(getUrl(), {
+  const addPost = async (name: string, text: string) =>
+    fetch(getUrl(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, text, publishedAt: new Date().getTime() }),
     });
-  };
 
   const handleSubmit = async (name: string, text: string) => {
-    await addPost(name, text);
+    try {
+      const response = await addPost(name, text);
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+    } catch (error) {
+      setApiError(`Failed to add post: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw error;
+    }
     fetchPosts();
   };
 
