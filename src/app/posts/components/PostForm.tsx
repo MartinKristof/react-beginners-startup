@@ -1,6 +1,7 @@
 import { FC, useActionState } from 'react';
 import { FormGroup } from './FormGroup';
 import { DEFAULT_FORM_STATE, submitForm } from '../actions/submitForm';
+import { SubmitButton } from './SubmitButton';
 
 interface IPostFormProps {
   onSubmit: (name: string, text: string) => Promise<void>;
@@ -48,9 +49,7 @@ export const PostForm: FC<IPostFormProps> = ({ onSubmit, apiError }) => {
         </FormGroup>
       </div>
       <div className="mt-2">
-        <button type="submit" className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
-          Submit
-        </button>
+        <SubmitButton>Submit</SubmitButton>
       </div>
     </form>
   );
