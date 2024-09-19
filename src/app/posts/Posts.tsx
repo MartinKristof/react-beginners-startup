@@ -32,8 +32,10 @@ const getUrl = () => {
 export const Posts: FC = () => {
   const [posts, setPosts] = useState<TPost[]>([]);
   const [apiError, setApiError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const fetchPosts = async (signal?: AbortSignal) => {
+    setLoading(true);
     try {
       const response = await fetch(getUrl(), { signal });
 
@@ -44,6 +46,8 @@ export const Posts: FC = () => {
       setPosts(data);
     } catch (error) {
       setApiError(`Failed to fetch posts: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -96,7 +100,9 @@ export const Posts: FC = () => {
       </nav>
       <section className="py-3 container mx-auto px-4 flex flex-col space-y-4 text-left">
         <PostForm onSubmit={handleSubmit} apiError={apiError} />
-        <section className="space-y-4">{posts.length > 0 && <PostList posts={posts} />}</section>
+        <section className="space-y-4">
+          {loading ? <div>Loading...</div> : posts.length > 0 && <PostList posts={posts} />}
+        </section>
       </section>
     </>
   );
