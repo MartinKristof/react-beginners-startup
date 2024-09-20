@@ -74,6 +74,7 @@ export const Posts: FC = () => {
 
   return (
     <>
+      <title>{`Posts - ${posts.length ? `See ${posts.length} posts` : 'No Posts'}`}</title>
       <PostForm onSubmit={handleSubmit} apiError={apiError} />
       <section className="space-y-4">
         {loading ? <div>Loading...</div> : posts.length > 0 && <PostList posts={posts} />}

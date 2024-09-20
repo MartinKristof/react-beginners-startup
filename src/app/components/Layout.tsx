@@ -4,6 +4,9 @@ import { NavItem } from './NavItem';
 
 export const Layout: FC = () => (
   <>
+    <title>Post App</title>
+    <meta name="description" content="A simple app." />
+    <link rel="author" href="https://github.com/MartinKristof" />
     <nav className="flex justify-start items-center bg-red-950 px-8 py-3 h-20">
       <ul className="flex">
         <NavItem to="/">Posts</NavItem>

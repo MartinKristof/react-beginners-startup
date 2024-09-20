@@ -61,6 +61,7 @@ export const Search: FC = () => {
 
   return (
     <>
+      <title>{`Search ${search}`}</title>
       <div className="w-1/3">
         <div className="mt-2">
           <form>
