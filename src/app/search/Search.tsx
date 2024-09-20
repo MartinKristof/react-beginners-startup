@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useDebounce } from 'use-debounce';
 import { TPost } from '../types';
 import { getUrl } from '../utils/getUrl';
 import { PostList } from '../components/PostList';
@@ -12,6 +13,7 @@ export const Search: FC = () => {
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get(SEARCH_PARAM) || '');
+  const [debouncedSearch] = useDebounce(search, 500);
 
   const fetchPosts = async (term: string, signal?: AbortSignal) => {
     if (!term.trim()) {
@@ -43,12 +45,12 @@ export const Search: FC = () => {
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
-    fetchPosts(search, signal);
+    fetchPosts(debouncedSearch, signal);
 
     return () => {
       controller.abort();
     };
-  }, [search]);
+  }, [debouncedSearch]);
 
   useEffect(() => {
     setSearchParams({ [SEARCH_PARAM]: search });
