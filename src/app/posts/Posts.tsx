@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from 'react';
-import { PostList } from './components/PostList';
-import { TPost } from './types';
+import { PostList } from '../components/PostList';
+import { TPost } from '../types';
 import { PostForm } from './components/PostForm';
+import { getUrl } from '../utils/getUrl';
 
 // const data = [
 //   {
@@ -17,17 +18,6 @@ import { PostForm } from './components/PostForm';
 //     text: 'Foo.',
 //   },
 // ];
-
-const API_URL = import.meta.env.VITE_API_URL;
-
-const getUrl = () => {
-  const url = new URL(API_URL);
-
-  url.searchParams.append('_sort', 'id');
-  url.searchParams.append('_order', 'desc');
-
-  return url;
-};
 
 export const Posts: FC = () => {
   const [posts, setPosts] = useState<TPost[]>([]);
