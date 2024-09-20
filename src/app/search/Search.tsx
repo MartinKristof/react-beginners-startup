@@ -1,47 +1,86 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { TPost } from '../types';
+import { getUrl } from '../utils/getUrl';
+import { PostList } from '../components/PostList';
 
-export const Search: FC = () => (
-  <>
-    <div className="w-1/3">
-      <div className="mt-2">
-        <form>
-          <label htmlFor="search" className="block mb-2 text-sm font-medium">
-            Search:
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              name="search"
-              id="search"
-              placeholder="Search..."
-              defaultValue="john"
-            />
-          </label>
-        </form>
+const SEARCH_PARAM = 'term';
+
+export const Search: FC = () => {
+  const [posts, setPosts] = useState<TPost[]>([]);
+  const [apiError, setApiError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get(SEARCH_PARAM) || '');
+
+  const fetchPosts = async (term: string, signal?: AbortSignal) => {
+    if (!term.trim()) {
+      setPosts([]);
+
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch(getUrl(term), { signal });
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const data = (await response.json()) as TPost[];
+      setPosts(data);
+    } catch (error) {
+      setApiError(`Failed to fetch posts: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+    fetchPosts(search, signal);
+
+    return () => {
+      controller.abort();
+    };
+  }, [search]);
+
+  useEffect(() => {
+    setSearchParams({ [SEARCH_PARAM]: search });
+    return () => {
+      setSearchParams({});
+    };
+  }, [search, setSearchParams]);
+
+  return (
+    <>
+      <div className="w-1/3">
+        <div className="mt-2">
+          <form>
+            <label htmlFor="search" className="block mb-2 text-sm font-medium">
+              Search:
+              <input
+                type="text"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                name="search"
+                id="search"
+                placeholder="Search..."
+                onChange={handleChange}
+                value={search}
+              />
+            </label>
+          </form>
+        </div>
       </div>
-    </div>
-    <section className="space-y-4">
-      <ul>
-        <li>
-          <div className="p-4 border border-stone-700 rounded my-3 flex justify-between gap-5 items-start">
-            <div className="flex-none">
-              <div className="flex-row">
-                <div>
-                  <strong>John Doe the First o...</strong>
-                </div>
-                <div>
-                  <em>10. 2. 2024 - 21:17:41</em>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1">
-              <p className="text-ellipsis overflow-hidden">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis condimentum augue id magna semper rutrum.
-                Pellentesque arcu. Etiam dictum tincidunt diam. In rutrum. Morbi scelerisque luctus velit. Null...
-              </p>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </section>
-  </>
-);
+      {apiError && <div className="text-red-500">{apiError}</div>}
+      <section className="space-y-4">
+        {loading ? <div>Loading...</div> : posts.length > 0 && <PostList posts={posts} />}
+      </section>
+    </>
+  );
+};
