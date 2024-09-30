@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useDebounce } from 'use-debounce';
 import { useApi } from '../../hooks/useApi';
 import { SEARCH_PARAM } from '../constants';
+import { getAbortController } from '../../utils/getAbortController';
 
 export const useSearch = () => {
   const [searchParams] = useSearchParams();
@@ -25,8 +26,7 @@ export const useSearch = () => {
       await getData(signal, term);
     };
 
-    const controller = new AbortController();
-    const { signal } = controller;
+    const { controller, signal } = getAbortController();
 
     searchPosts(debouncedSearch, signal);
 

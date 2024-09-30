@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useApi } from '../../hooks/useApi';
+import { getAbortController } from '../../utils/getAbortController';
 
 export const usePosts = () => {
   const { posts, loading, apiError, getData, postData } = useApi();
@@ -11,8 +12,7 @@ export const usePosts = () => {
   };
 
   useEffect(() => {
-    const controller = new AbortController();
-    const { signal } = controller;
+    const { controller, signal } = getAbortController();
     getData(signal);
 
     return () => {
