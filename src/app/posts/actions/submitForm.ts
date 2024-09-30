@@ -1,4 +1,4 @@
-export const DEFAULT_FORM_STATE = { name: '', text: '', errors: { name: '', text: '' } };
+import { DEFAULT_FORM_STATE, NAME_ID, TEXT_ID } from '../constants';
 
 const validateForm = (name: string, text: string) => {
   const errors = { ...DEFAULT_FORM_STATE.errors };
@@ -21,8 +21,8 @@ const validateForm = (name: string, text: string) => {
 export const submitForm =
   (onSubmit: (name: string, text: string) => Promise<void>) =>
   async (_: { name: string; text: string; errors: { name: string; text: string } }, payload: FormData) => {
-    const text = payload.get('text') as string;
-    const name = payload.get('name') as string;
+    const text = payload.get(TEXT_ID) as string;
+    const name = payload.get(NAME_ID) as string;
 
     const errors = validateForm(name, text);
 
