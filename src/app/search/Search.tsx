@@ -4,8 +4,12 @@ import { useDebounce } from 'use-debounce';
 import { TPost } from '../types';
 import { getUrl } from '../utils/getUrl';
 import { PostList } from '../components/PostList';
+import { FormGroup } from '../components/FormGroup';
+import { Input } from '../components/Input';
 
 const SEARCH_PARAM = 'term';
+
+const SEARCH_ID = 'search';
 
 export const Search: FC = () => {
   const [posts, setPosts] = useState<TPost[]>([]);
@@ -65,18 +69,16 @@ export const Search: FC = () => {
       <div className="w-1/3">
         <div className="mt-2">
           <form>
-            <label htmlFor="search" className="block mb-2 text-sm font-medium">
-              Search:
-              <input
+            <FormGroup label="Search" id={SEARCH_ID} error={apiError}>
+              <Input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                name="search"
-                id="search"
+                name={SEARCH_ID}
+                id={SEARCH_ID}
                 placeholder="Search..."
                 onChange={handleChange}
                 value={search}
               />
-            </label>
+            </FormGroup>
           </form>
         </div>
       </div>
