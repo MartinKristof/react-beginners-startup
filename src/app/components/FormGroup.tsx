@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react';
+import { ErrorMessage } from './ErrorMessage';
 
 interface IFormGroupProps {
   id: string;
@@ -12,6 +13,6 @@ export const FormGroup: FC<IFormGroupProps> = ({ id, children, label = 'Your inp
     <label htmlFor={id} className="block mb-2 text-sm font-medium">
       {label}:{children}
     </label>
-    {error && <div className="text-red-500">{error}</div>}
+    {error && <ErrorMessage>{error}</ErrorMessage>}
   </div>
 );

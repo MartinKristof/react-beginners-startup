@@ -6,6 +6,7 @@ import { getUrl } from '../utils/getUrl';
 import { PostList } from '../components/PostList';
 import { FormGroup } from '../components/FormGroup';
 import { Input } from '../components/Input';
+import { ErrorMessage } from '../components/ErrorMessage';
 
 const SEARCH_PARAM = 'term';
 
@@ -82,7 +83,7 @@ export const Search: FC = () => {
           </form>
         </div>
       </div>
-      {apiError && <div className="text-red-500">{apiError}</div>}
+      {apiError && <ErrorMessage>{apiError}</ErrorMessage>}
       <PostList posts={posts} isLoading={loading} />
     </>
   );
