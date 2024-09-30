@@ -1,64 +1,50 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDebounce } from 'use-debounce';
-import { TPost } from '../types';
-import { getUrl } from '../utils/getUrl';
 import { PostList } from '../components/PostList';
 import { FormGroup } from '../components/FormGroup';
 import { Input } from '../components/Input';
 import { ErrorMessage } from '../components/ErrorMessage';
+import { useApi } from '../hooks/useApi';
 
 const SEARCH_PARAM = 'term';
 
 const SEARCH_ID = 'search';
 
 export const Search: FC = () => {
-  const [posts, setPosts] = useState<TPost[]>([]);
-  const [apiError, setApiError] = useState('');
-  const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get(SEARCH_PARAM) || '');
   const [debouncedSearch] = useDebounce(search, 500);
-
-  const fetchPosts = async (term: string, signal?: AbortSignal) => {
-    if (!term.trim()) {
-      setPosts([]);
-
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await fetch(getUrl(term), { signal });
-
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const data = (await response.json()) as TPost[];
-      setPosts(data);
-    } catch (error) {
-      setApiError(`Failed to fetch posts: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { posts, loading, apiError, getData, setPosts } = useApi();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
   useEffect(() => {
+    const searchPosts = async (term: string, signal?: AbortSignal) => {
+      if (!term.trim()) {
+        setPosts([]);
+
+        return;
+      }
+
+      await getData(signal, term);
+    };
+
     const controller = new AbortController();
     const { signal } = controller;
-    fetchPosts(debouncedSearch, signal);
+
+    searchPosts(debouncedSearch, signal);
 
     return () => {
       controller.abort();
     };
-  }, [debouncedSearch]);
+  }, [debouncedSearch, getData, setPosts]);
 
   useEffect(() => {
     setSearchParams({ [SEARCH_PARAM]: search });
+
     return () => {
       setSearchParams({});
     };
