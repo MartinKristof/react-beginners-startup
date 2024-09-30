@@ -4,21 +4,6 @@ import { TPost } from '../types';
 import { PostForm } from './components/PostForm';
 import { getUrl } from '../utils/getUrl';
 
-// const data = [
-//   {
-//     id: 1,
-//     name: 'John Doe the First of His Name and the Last of His Kind',
-//     publishedAt: new Date(),
-//     text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos.',
-//   },
-//   {
-//     id: 2,
-//     name: 'John Doe',
-//     publishedAt: new Date(),
-//     text: 'Foo.',
-//   },
-// ];
-
 export const Posts: FC = () => {
   const [posts, setPosts] = useState<TPost[]>([]);
   const [apiError, setApiError] = useState('');
